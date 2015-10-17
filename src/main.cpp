@@ -1,80 +1,36 @@
-#include <SDL2/SDL.h>
 #include <iostream>
 
-using namespace std;
+#include "kernel/Kernel.h"
 
-const int SCREEN_WIDTH = 1280;
-const int SCREEN_HEIGHT = 720;
+Kernel* kernel;
+int result;
+
 
 int main(int argc, char* args[]) {
 
-  // Main window
-  SDL_Window* window = NULL;
+  kernel = new Kernel();
 
-  // Window surface
-  SDL_Surface* screen_surface = NULL;
+  result = kernel->init();
 
-  // Event container
-  SDL_Event e;
-
-  bool stop = false;
-
-  bool color = true;
-
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-    cerr << "SDL could not initialize video! SDL_Error: " << SDL_GetError() << endl;
+  if (result) {
+    std::cerr << "Something went wrong while initializing the Kernel class" << std::endl;
 
     return 0;
   }
 
-  // Create window
-  window = SDL_CreateWindow("Pinball Controller",
-                            SDL_WINDOWPOS_UNDEFINED,
-                            SDL_WINDOWPOS_UNDEFINED,
-                            SCREEN_WIDTH,
-                            SCREEN_HEIGHT,
-                            SDL_WINDOW_SHOWN);
+  result = kernel->loop();
 
-  if (window == NULL) {
-    cerr << "Could not create window! SDL_Error: " << SDL_GetError() << endl;
+  if (result) {
+    std::cerr << "Something went wrong while the game loop was running" << std::endl;
 
     return 0;
   }
 
-  // Get the window surface
-  screen_surface = SDL_GetWindowSurface(window);
+  result = kernel->cleanup();
 
-  // Fill the surface
-  SDL_FillRect(screen_surface, NULL, SDL_MapRGB(screen_surface->format, 0xFF, 0xFF, 0xFF));
-
-  // Update the surface
-  SDL_UpdateWindowSurface(window);
-
-  while (!stop) {
-
-    while (SDL_PollEvent(&e) != 0) {
-      if (e.type == SDL_QUIT) {
-        stop = true;
-      }
-
-      if (e.type == SDL_KEYDOWN) {
-        if (color) {
-          SDL_FillRect(screen_surface, NULL, SDL_MapRGB(screen_surface->format, 0x00, 0x00, 0x00));
-
-          color = !color;
-        } else {
-          SDL_FillRect(screen_surface, NULL, SDL_MapRGB(screen_surface->format, 0xFF, 0xFF, 0xFF));
-
-          color = !color;
-        }
-
-        SDL_UpdateWindowSurface(window);
-      }
-    }
-
+  if (result) {
+    std::cerr << "Something went wrong while cleaning up the Kernel class" << std::endl;
   }
-
-  SDL_Quit();
 
   return 0;
 }
