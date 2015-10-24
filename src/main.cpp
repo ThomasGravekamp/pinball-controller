@@ -12,7 +12,7 @@ int main(int argc, char* args[]) {
 
   result = kernel->init();
 
-  if (result) {
+  if (!result) {
     std::cerr << "Something went wrong while initializing the Kernel class" << std::endl;
 
     return 0;
@@ -20,7 +20,7 @@ int main(int argc, char* args[]) {
 
   result = kernel->loop();
 
-  if (result) {
+  if (!result) {
     std::cerr << "Something went wrong while the game loop was running" << std::endl;
 
     return 0;
@@ -28,7 +28,7 @@ int main(int argc, char* args[]) {
 
   result = kernel->cleanup();
 
-  if (result) {
+  if (!result) {
     std::cerr << "Something went wrong while cleaning up the Kernel class" << std::endl;
   }
 

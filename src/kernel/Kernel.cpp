@@ -63,6 +63,8 @@ int Kernel::loop() {
     }
 
   }
+
+  return 1;
 }
 
 int Kernel::cleanup() {
