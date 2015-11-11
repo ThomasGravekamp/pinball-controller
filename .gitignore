@@ -27,5 +27,5 @@
 *.out
 *.app
 
-# Bin folder
-bin/
+# Binary
+bin/runner
