@@ -2,6 +2,7 @@
 #define PC_KERNEL_H
 
 #include <iostream>
+#include <string>
 
 #include <SDL2/SDL.h>
 
@@ -16,6 +17,9 @@ private:
 
   // Window surface
   SDL_Surface* _surface;
+
+  // Texture surface
+  SDL_Surface* _texture;
 
   // Event container
   SDL_Event _e;

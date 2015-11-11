@@ -36,6 +36,24 @@ int Kernel::init() {
   // Update the surface
   SDL_UpdateWindowSurface(_window);
 
+  std::string filename = SDL_GetBasePath();
+  filename.append("assets/textures/texture-1.bmp");
+
+  // Load the texture
+  _texture = SDL_LoadBMP(filename.c_str());
+
+  if (_texture == NULL) {
+    std::cerr << SDL_GetError() << std::endl;
+    return 0;
+  }
+
+  _texture = SDL_ConvertSurface(_texture, _surface->format, 0);
+
+  if (_texture == NULL) {
+    std::cerr << SDL_GetError() << std::endl;
+    return 0;
+  }
+
   return 1;
 }
 
@@ -58,6 +76,8 @@ int Kernel::loop() {
           _color = !_color;
         }
 
+        SDL_BlitSurface(_texture, NULL, _surface, NULL);
+
         SDL_UpdateWindowSurface(_window);
       }
     }
@@ -68,6 +88,12 @@ int Kernel::loop() {
 }
 
 int Kernel::cleanup() {
+  SDL_FreeSurface(_texture);
+  _texture = NULL;
+
+  SDL_DestroyWindow(_window);
+  _window = NULL;
+
   SDL_Quit();
 
   return 1;
