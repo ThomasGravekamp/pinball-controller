@@ -23,7 +23,7 @@ SOURCEDIRS := $(shell cd $(SRCDIR) && find . -type d)
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 
 # Compile flags
-CFLAGS := -g -Wall
+CFLAGS := -g -Wall -std=c++11
 
 # Libraries to use
 # -lSDL2       -> base
