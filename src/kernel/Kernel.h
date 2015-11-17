@@ -4,7 +4,10 @@
 #include <iostream>
 #include <string>
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
+
+#include "../graphics/Surface.h"
+#include "../graphics/SurfaceManager.h"
 
 // @TODO Move to config file
 const int SCREEN_WIDTH = 1280;
@@ -12,6 +15,9 @@ const int SCREEN_HEIGHT = 720;
 
 class Kernel {
 private:
+  // SurfaceManager
+  SurfaceManager* _surface_manager;
+
   // Main window
   SDL_Window* _window;
 
@@ -19,7 +25,7 @@ private:
   SDL_Surface* _surface;
 
   // Texture surface
-  SDL_Surface* _texture;
+  Surface* _texture;
 
   // Event container
   SDL_Event _e;
@@ -29,6 +35,7 @@ private:
 
   // Temp var
   bool _color;
+
 public:
   Kernel();
 

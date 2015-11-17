@@ -5,11 +5,8 @@
 Kernel* kernel;
 int result;
 
-
 int main(int argc, char* args[]) {
-
   kernel = new Kernel();
-
   result = kernel->init();
 
   if (!result) {

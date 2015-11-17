@@ -33,7 +33,7 @@ CFLAGS := -g -Wall -std=c++11
 LIB := -lSDL2 -lSDL2_image -lSDL2_ttf
 
 # Include directories
-INC := -I include
+INC := -I /usr/include/SDL2
 
 
 all: directories $(TARGET)

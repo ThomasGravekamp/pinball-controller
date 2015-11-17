@@ -1,8 +1,10 @@
 #include "Kernel.h"
 
 Kernel::Kernel() {
-  _stop = false;
-  _color = true;
+  _surface_manager = nullptr;
+
+  this->_stop = false;
+  this->_color = true;
 }
 
 int Kernel::init() {
@@ -33,26 +35,17 @@ int Kernel::init() {
   // Fill the surface
   SDL_FillRect(_surface, NULL, SDL_MapRGB(_surface->format, 0xFF, 0xFF, 0xFF));
 
+  _surface_manager = new SurfaceManager();
+  _surface_manager->init(_surface);
+  _texture = _surface_manager->createSurface("texture-1", "assets/textures/texture-1.png");
+
+  if (_texture == nullptr) {
+    std::cerr << "Something went wrong while creating the surface" << std::endl;
+    return 0;
+  }
+
   // Update the surface
   SDL_UpdateWindowSurface(_window);
-
-  std::string filename = SDL_GetBasePath();
-  filename.append("assets/textures/texture-1.bmp");
-
-  // Load the texture
-  _texture = SDL_LoadBMP(filename.c_str());
-
-  if (_texture == NULL) {
-    std::cerr << SDL_GetError() << std::endl;
-    return 0;
-  }
-
-  _texture = SDL_ConvertSurface(_texture, _surface->format, 0);
-
-  if (_texture == NULL) {
-    std::cerr << SDL_GetError() << std::endl;
-    return 0;
-  }
 
   return 1;
 }
@@ -76,7 +69,7 @@ int Kernel::loop() {
           _color = !_color;
         }
 
-        SDL_BlitSurface(_texture, NULL, _surface, NULL);
+        SDL_BlitSurface(_texture->getSurface(), NULL, _surface, NULL);
 
         SDL_UpdateWindowSurface(_window);
       }
@@ -88,11 +81,11 @@ int Kernel::loop() {
 }
 
 int Kernel::cleanup() {
-  SDL_FreeSurface(_texture);
-  _texture = NULL;
+  _surface_manager->cleanup();
+  _surface_manager = nullptr;
 
   SDL_DestroyWindow(_window);
-  _window = NULL;
+  _window = nullptr;
 
   SDL_Quit();
 

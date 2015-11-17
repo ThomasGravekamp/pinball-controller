@@ -29,3 +29,7 @@
 
 # Binary
 bin/runner
+
+# Spikes
+spikes
+bin/ticket
