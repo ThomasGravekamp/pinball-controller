@@ -1,7 +1,10 @@
 #include "Kernel.h"
 
 Kernel::Kernel() {
-  _surface_manager = nullptr;
+  _texture_manager = nullptr;
+  _window = nullptr;
+  _renderer = nullptr;
+  _texture = nullptr;
 
   this->_stop = false;
   this->_color = true;
@@ -29,15 +32,20 @@ int Kernel::init() {
     return 0;
   }
 
-  // Get the window surface
-  _surface = SDL_GetWindowSurface(_window);
+  // Create renderer
+  _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 
-  // Fill the surface
-  SDL_FillRect(_surface, NULL, SDL_MapRGB(_surface->format, 0xFF, 0xFF, 0xFF));
+  if (_renderer == nullptr) {
+    std::cerr << "Could not create renderer! SDL_Error: " << SDL_GetError() << std::endl;
 
-  _surface_manager = new SurfaceManager();
-  _surface_manager->init(_surface);
-  _texture = _surface_manager->createSurface("texture-1", "assets/textures/texture-1.png");
+    return 0;
+  }
+
+  SDL_SetRenderDrawColor(_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+
+  _texture_manager = new TextureManager();
+  _texture_manager->init(_renderer);
+  _texture = _texture_manager->loadTexture("texture-1", "assets/textures/texture-1.png");
 
   if (_texture == nullptr) {
     std::cerr << "Something went wrong while creating the surface" << std::endl;
@@ -57,36 +65,29 @@ int Kernel::loop() {
       if (_e.type == SDL_QUIT) {
         _stop = true;
       }
-
-      if (_e.type == SDL_KEYDOWN) {
-        if (_color) {
-          SDL_FillRect(_surface, NULL, SDL_MapRGB(_surface->format, 0x00, 0x00, 0x00));
-
-          _color = !_color;
-        } else {
-          SDL_FillRect(_surface, NULL, SDL_MapRGB(_surface->format, 0xFF, 0xFF, 0xFF));
-
-          _color = !_color;
-        }
-
-        SDL_BlitSurface(_texture->getSurface(), NULL, _surface, NULL);
-
-        SDL_UpdateWindowSurface(_window);
-      }
     }
 
+    // Clear the screen
+    SDL_RenderClear(_renderer);
+
+    // Render texture to the screen
+    SDL_RenderCopy(_renderer, _texture->getTexture(), NULL, NULL);
+
+    // Update screen
+    SDL_RenderPresent(_renderer);
   }
 
   return 1;
 }
 
 int Kernel::cleanup() {
-  _surface_manager->cleanup();
-  _surface_manager = nullptr;
+  _texture_manager->cleanup();
+  _texture_manager = nullptr;
 
   SDL_DestroyWindow(_window);
   _window = nullptr;
 
+  IMG_Quit();
   SDL_Quit();
 
   return 1;
