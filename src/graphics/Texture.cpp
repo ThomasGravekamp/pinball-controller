@@ -21,6 +21,10 @@ int Texture::cleanup() {
   return 1;
 }
 
+void Texture::render(SDL_Renderer* renderer) {
+  SDL_RenderCopy(renderer, _texture, NULL, NULL);
+}
+
 int Texture::loadTexture(std::string path, SDL_Renderer* renderer) {
   // Build the path to the texture
   std::string fullpath = SDL_GetBasePath();

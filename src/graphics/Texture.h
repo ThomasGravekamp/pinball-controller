@@ -17,6 +17,8 @@ public:
   int init();
   int cleanup();
 
+  void render(SDL_Renderer* renderer);
+
   int loadTexture(std::string path, SDL_Renderer* renderer);
   int loadTexture(SDL_Surface* surface, SDL_Renderer* renderer);
   SDL_Texture* getTexture();
