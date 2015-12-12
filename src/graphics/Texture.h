@@ -9,6 +9,10 @@
 class Texture {
 private:
   SDL_Texture* _texture;
+  SDL_Rect* _renderRectangle;
+
+  int _width;
+  int _height;
 
 public:
   Texture();
@@ -17,7 +21,7 @@ public:
   int init();
   int cleanup();
 
-  void render(SDL_Renderer* renderer);
+  void render(SDL_Renderer* renderer, int x, int y);
 
   int loadTexture(std::string path, SDL_Renderer* renderer);
   int loadTexture(SDL_Surface* surface, SDL_Renderer* renderer);

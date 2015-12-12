@@ -2,6 +2,14 @@
 
 Texture::Texture() {
   _texture = nullptr;
+  _renderRectangle = new SDL_Rect;
+  _renderRectangle->x = 0;
+  _renderRectangle->y = 0;
+  _renderRectangle->w = 0;
+  _renderRectangle->h = 0;
+
+  _width = 0;
+  _height = 0;
 }
 
 Texture::~Texture() {
@@ -21,8 +29,11 @@ int Texture::cleanup() {
   return 1;
 }
 
-void Texture::render(SDL_Renderer* renderer) {
-  SDL_RenderCopy(renderer, _texture, NULL, NULL);
+void Texture::render(SDL_Renderer* renderer, int x, int y) {
+  _renderRectangle->x = x;
+  _renderRectangle->y = y;
+
+  SDL_RenderCopy(renderer, _texture, NULL, _renderRectangle);
 }
 
 int Texture::loadTexture(std::string path, SDL_Renderer* renderer) {
@@ -43,6 +54,9 @@ int Texture::loadTexture(std::string path, SDL_Renderer* renderer) {
   if (_texture == nullptr) {
     return 0;
   }
+
+  _renderRectangle->w = new_surface->w;
+  _renderRectangle->h = new_surface->h;
 
   SDL_FreeSurface(new_surface);
 

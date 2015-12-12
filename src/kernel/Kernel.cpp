@@ -71,7 +71,7 @@ int Kernel::loop() {
     SDL_RenderClear(_renderer);
 
     // Render texture to the screen
-    _texture->render(_renderer);
+    _texture->render(_renderer, 0, 0);
 
     // Update screen
     SDL_RenderPresent(_renderer);
