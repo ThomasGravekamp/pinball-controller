@@ -5,6 +5,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 class Texture {
 private:
@@ -25,6 +26,7 @@ public:
 
   int loadTexture(std::string path, SDL_Renderer* renderer);
   int loadTexture(SDL_Surface* surface, SDL_Renderer* renderer);
+  int loadTextureFromFont(TTF_Font* font, std::string text, SDL_Color* color, SDL_Renderer* renderer);
   SDL_Texture* getTexture();
 };
 

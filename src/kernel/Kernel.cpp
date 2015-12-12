@@ -5,6 +5,7 @@ Kernel::Kernel() {
   _window = nullptr;
   _renderer = nullptr;
   _texture = nullptr;
+  _textTexture = nullptr;
 
   this->_stop = false;
   this->_color = true;
@@ -52,6 +53,13 @@ int Kernel::init() {
     return 0;
   }
 
+  _textTexture = _texture_manager->loadTextureFromFont("text-texture-1", "Hello World!");
+
+  if (_textTexture == nullptr) {
+    std::cerr << "Something went wrong while creating the surface" << std::endl;
+    return 0;
+  }
+
   // Update the surface
   SDL_UpdateWindowSurface(_window);
 
@@ -72,6 +80,8 @@ int Kernel::loop() {
 
     // Render texture to the screen
     _texture->render(_renderer, 0, 0);
+
+    _textTexture->render(_renderer, 10, 10);
 
     // Update screen
     SDL_RenderPresent(_renderer);

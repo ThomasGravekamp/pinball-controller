@@ -27,6 +27,9 @@ private:
   // Main texture
   Texture* _texture;
 
+  // Text texture
+  Texture* _textTexture;
+
   // Event container
   SDL_Event _e;
 

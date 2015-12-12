@@ -73,6 +73,27 @@ int Texture::loadTexture(SDL_Surface* surface, SDL_Renderer* renderer) {
   return 1;
 }
 
+int Texture::loadTextureFromFont(TTF_Font* font, std::string text, SDL_Color* color, SDL_Renderer* renderer) {
+  SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), *color);
+
+  if (surface == nullptr) {
+    return 0;
+  }
+
+  _texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+  if (_texture == nullptr) {
+    return 0;
+  }
+
+  _renderRectangle->w = surface->w;
+  _renderRectangle->h = surface->h;
+
+  SDL_FreeSurface(surface);
+
+  return 1;
+}
+
 SDL_Texture* Texture::getTexture() {
   return _texture;
 }

@@ -1,6 +1,7 @@
 #ifndef PC_TEXTURE_MANAGER_H
 #define PC_TEXTURE_MANAGER_H
 
+#include <iostream>
 #include <algorithm>
 #include <map>
 #include <string>
@@ -26,6 +27,7 @@ public:
   int cleanup();
 
   Texture* loadTexture(std::string name, std::string path);
+  Texture* loadTextureFromFont(std::string name, std::string text);
   Texture* getTextureByName(std::string name);
 };
 
