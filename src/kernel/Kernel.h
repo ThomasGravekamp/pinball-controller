@@ -10,8 +10,8 @@
 #include "../graphics/TextureManager.h"
 
 // @TODO Move to config file
-const int SCREEN_WIDTH = 1280;
-const int SCREEN_HEIGHT = 720;
+const int SCREEN_WIDTH = 1920;
+const int SCREEN_HEIGHT = 1080;
 
 class Kernel {
 private:
